@@ -16,6 +16,8 @@ namespace Lego
         internal static Brickset.Connection bs;
         internal static Rebrickable.Connection rb;
 
+        internal static bool Refresh = false;
+
         private const string dsFile = @"ToSaLego.xml";
         private const string bsUser = "ToSa";
         private const string bsPass = "heiner";
@@ -50,14 +52,18 @@ namespace Lego
                 var cq = from c in ds.Color.AsEnumerable()
                          where c.LDrawColorId == lcid
                          select c;
+                LegoDS.ColorRow cr;
                 if (cq.Any())
                 {
-                    LegoDS.ColorRow cr = cq.First();
-                    cr.Name = rbColor.SelectSingleNode("color_name").InnerText.Trim();
+                    cr = cq.First();
+                    if (Refresh)
+                    {
+                        cr.Name = rbColor.SelectSingleNode("color_name").InnerText.Trim();
+                    }
                 }
                 else
                 {
-                    LegoDS.ColorRow cr = ds.Color.NewColorRow();
+                    cr = ds.Color.NewColorRow();
                     cr.LDrawColorId = lcid;
                     cr.Name = rbColor.SelectSingleNode("color_name").InnerText.Trim();
                     ds.Color.AddColorRow(cr);
@@ -78,6 +84,9 @@ namespace Lego
                 if (tq.Any())
                 {
                     tr = tq.First();
+                    if (Refresh)
+                    {
+                    }
                 }
                 else
                 {
@@ -95,6 +104,9 @@ namespace Lego
                     if (sq.Any())
                     {
                         sr = sq.First();
+                        if (Refresh)
+                        {
+                        }
                     }
                     else
                     {
@@ -108,6 +120,7 @@ namespace Lego
             ds.AcceptChanges();
         }
 
+        /*
         private static LegoDS.CategoryRow GetCategory(string category)
         {
             var cq = from c in ds.Category.AsEnumerable()
@@ -135,6 +148,7 @@ namespace Lego
             ds.AcceptChanges();
             return tr;
         }
+        */
 
         private static LegoDS.ColorRow GetColor(string colorid)
         {
@@ -146,6 +160,7 @@ namespace Lego
             return null;
         }
 
+        /*
         private static void LoadPartsRb()
         {
             List<XmlNode> rbSParts = new List<XmlNode>();
@@ -233,91 +248,80 @@ namespace Lego
             foreach (XmlNode rbSSet in rbSSets)
             {
                 string sid = rbSSet.SelectSingleNode("set_id").InnerText.Trim();
-                XmlNode rbSet = rb.GetSetParts(sid)[0];
-                var sq = from s in ds.Set.AsEnumerable()
-                         where s.Number == sid
-                         select s;
-                LegoDS.SetRow sr;
-                if (sq.Any())
-                {
-                    sr = sq.First();
-                    sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
-                    sr.ImageUrl = rbSet.SelectSingleNode("set_img_url").InnerText.Trim();
-                }
-                else
-                {
-                    sr = ds.Set.NewSetRow();
-                    sr.Number = sid;
-                    sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
-                    sr.ImageUrl = rbSet.SelectSingleNode("set_img_url").InnerText.Trim();
-                    ds.Set.AddSetRow(sr);
-                }
-                /*
-                foreach (XmlNode rbSetPart in rbSet.SelectSingleNode("external_part_ids").ChildNodes)
-                {
-                    if (rbExtId.Name == "lego_element_ids")
-                    {
-                        foreach (XmlNode rbElement in rbExtId.SelectNodes("element"))
-                        {
-                            string eid = rbElement.SelectSingleNode("element_id").InnerText.Trim();
-                            var pq = from p in ds.Part.AsEnumerable()
-                                     where p.Number == eid
-                                     select p;
-                            LegoDS.PartRow pr;
-                            if (pq.Any())
-                            {
-                                pr = pq.First();
-                                pr.ColorRow = GetColor(rbElement.SelectSingleNode("color").InnerText.Trim());
-                                pr.MoldRow = mr;
-                            }
-                            else
-                            {
-                                pr = ds.Part.NewPartRow();
-                                pr.Number = eid;
-                                pr.ColorRow = GetColor(rbElement.SelectSingleNode("color").InnerText.Trim());
-                                pr.MoldRow = mr;
-                                ds.Part.AddPartRow(pr);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string eid = rbExtId.InnerText.Trim();
-                        LegoDS.ExtTypeRow tr = GetExtType(rbExtId.Name.Trim());
-                        var eq = from e in ds.ExtId.AsEnumerable()
-                                 where e.Number == eid && e.ExtTypeRow == tr
-                                 select e;
-                        LegoDS.ExtIdRow er;
-                        if (eq.Any())
-                        {
-                        }
-                        else
-                        {
-                            er = ds.ExtId.NewExtIdRow();
-                            er.Number = eid;
-                            er.ExtTypeRow = tr;
-                            er.MoldRow = mr;
-                            ds.ExtId.AddExtIdRow(er);
-                        }
-
-                    }
-                }
- */ 
+                GetSet(sid);
             }
             ds.AcceptChanges();
+        }
+         */
+
+        private static LegoDS.SetRow LoadSet(string setid)
+        {
+            XmlNode rbSet = rb.GetSet(setid)[0];
+            var sq = from s in ds.Set.AsEnumerable()
+                     where s.Number == setid
+                     select s;
+            LegoDS.SetRow sr;
+            if (sq.Any())
+            {
+                sr = sq.First();
+                if (Refresh)
+                {
+                    sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
+                    sr.ImageUrl = rbSet.SelectSingleNode("set_img_url").InnerText.Trim();
+                    LoadSetParts(setid);
+                }
+            }
+            else
+            {
+                sr = ds.Set.NewSetRow();
+                sr.Number = setid;
+                sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
+                sr.ImageUrl = rbSet.SelectSingleNode("set_img_url").InnerText.Trim();
+                ds.Set.AddSetRow(sr);
+                LoadSetParts(setid);
+            }
+            return sr;
+        }
+
+        private static LegoDS.SetRow GetSet(string setid)
+        {
+            var sq = from s in ds.Set.AsEnumerable()
+                     where s.Number == setid
+                     select s;
+            if (sq.Any())
+                return sq.First();
+            return LoadSet(setid);
+        }
+
+        private static void LoadSetParts(string setid)
+        {
+            XmlNodeList rbSetParts = rb.GetSetParts(setid);
+            foreach (XmlNode rbSetPart in rbSetParts)
+            {
+            }
+        }
+
+        private static void LoadMySetsRb()
+        {
+            XmlNodeList rbMySets = rb.GetUserSets();
+            foreach (XmlNode rbMySet in rbMySets)
+            {
+                LegoDS.SetRow sr = GetSet(rbMySet.SelectSingleNode("set_id").InnerText);
+                sr.Count = int.Parse(rbMySet.SelectSingleNode("qty").InnerText);
+            }
         }
 
         public static void LoadReferenceData()
         {
             LoadColorsRb();
             LoadThemesBs();
-            LoadPartsRb();
-            LoadSetsRb();
+//            LoadPartsRb();
+//            LoadSetsRb();
         }
 
         public static void LoadMySets()
         {
-
+            LoadMySetsRb();
         }
 
     }

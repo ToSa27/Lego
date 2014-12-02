@@ -30,6 +30,7 @@ namespace LegoWpf
         {
             Lego.Connection.Connect();
             Lego.Connection.LoadReferenceData();
+            Lego.Connection.LoadMySets();
             Lego.Connection.Save();
         }
 

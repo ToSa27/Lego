@@ -98,7 +98,7 @@ namespace Rebrickable
         {
             if (!_IsOpen)
                 return null;
-            return Call("get_set", false, new Dictionary<String, String>() { { "set_id", setid } }, "root");
+            return Call("get_set", false, new Dictionary<String, String>() { { "set_id", setid } }, "root/set");
         }
 
         public XmlNodeList GetSetParts(String setid)
@@ -108,19 +108,7 @@ namespace Rebrickable
             return Call("get_set_parts", false, new Dictionary<String, String>() { { "set", setid } }, "set/parts/part");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        public XmlNodeList GetSets()
+        public XmlNodeList GetUserSets()
         {
             if (!_IsOpen)
                 return null;
