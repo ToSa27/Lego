@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LegoDS" targetNamespace="http://tempuri.org/LegoDS.xsd" xmlns:mstns="http://tempuri.org/LegoDS.xsd" xmlns="http://tempuri.org/LegoDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="LegoDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="LegoDS" msprop:Generator_UserDSName="LegoDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Set" msprop:Generator_TableClassName="SetDataTable" msprop:Generator_TableVarName="tableSet" msprop:Generator_RowChangedName="SetRowChanged" msprop:Generator_TablePropName="Set" msprop:Generator_RowDeletingName="SetRowDeleting" msprop:Generator_RowChangingName="SetRowChanging" msprop:Generator_RowEvHandlerName="SetRowChangeEventHandler" msprop:Generator_RowDeletedName="SetRowDeleted" msprop:Generator_RowClassName="SetRow" msprop:Generator_UserTableName="Set" msprop:Generator_RowEvArgName="SetRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="xs:string" minOccurs="0" />
+              <xs:element name="Variant" msprop:Generator_ColumnVarNameInTable="columnVariant" msprop:Generator_ColumnPropNameInRow="Variant" msprop:Generator_ColumnPropNameInTable="VariantColumn" msprop:Generator_UserColumnName="Variant" type="xs:string" minOccurs="0" />
+              <xs:element name="Count" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" default="0" minOccurs="0" />
+              <xs:element name="ThemeId" msprop:Generator_ColumnVarNameInTable="columnThemeId" msprop:Generator_ColumnPropNameInRow="ThemeId" msprop:Generator_ColumnPropNameInTable="ThemeIdColumn" msprop:Generator_UserColumnName="ThemeId" type="xs:long" minOccurs="0" />
+              <xs:element name="SubThemeId" msprop:Generator_ColumnVarNameInTable="columnSubThemeId" msprop:Generator_ColumnPropNameInRow="SubThemeId" msprop:Generator_ColumnPropNameInTable="SubThemeIdColumn" msprop:Generator_UserColumnName="SubThemeId" type="xs:long" minOccurs="0" />
+              <xs:element name="IsBuilt" msprop:Generator_ColumnVarNameInTable="columnIsBuilt" msprop:Generator_ColumnPropNameInRow="IsBuilt" msprop:Generator_ColumnPropNameInTable="IsBuiltColumn" msprop:Generator_UserColumnName="IsBuilt" type="xs:boolean" default="false" />
+              <xs:element name="Year" msprop:Generator_ColumnVarNameInTable="columnYear" msprop:Generator_ColumnPropNameInRow="Year" msprop:Generator_ColumnPropNameInTable="YearColumn" msprop:Generator_UserColumnName="Year" type="xs:string" minOccurs="0" />
+              <xs:element name="ImageUrl" msprop:Generator_ColumnVarNameInTable="columnImageUrl" msprop:Generator_ColumnPropNameInRow="ImageUrl" msprop:Generator_ColumnPropNameInTable="ImageUrlColumn" msprop:Generator_UserColumnName="ImageUrl" type="xs:string" minOccurs="0" />
+              <xs:element name="ThumbnailUrl" msprop:Generator_ColumnVarNameInTable="columnThumbnailUrl" msprop:Generator_ColumnPropNameInRow="ThumbnailUrl" msprop:Generator_ColumnPropNameInTable="ThumbnailUrlColumn" msprop:Generator_UserColumnName="ThumbnailUrl" type="xs:string" minOccurs="0" />
+              <xs:element name="ImageFilename" msprop:Generator_ColumnVarNameInTable="columnImageFilename" msprop:Generator_ColumnPropNameInRow="ImageFilename" msprop:Generator_ColumnPropNameInTable="ImageFilenameColumn" msprop:Generator_UserColumnName="ImageFilename" type="xs:string" minOccurs="0" />
+              <xs:element name="BricksetUrl" msprop:Generator_ColumnVarNameInTable="columnBricksetUrl" msprop:Generator_ColumnPropNameInRow="BricksetUrl" msprop:Generator_ColumnPropNameInTable="BricksetUrlColumn" msprop:Generator_UserColumnName="BricksetUrl" type="xs:string" minOccurs="0" />
+              <xs:element name="EAN" msprop:Generator_ColumnVarNameInTable="columnEAN" msprop:Generator_ColumnPropNameInRow="EAN" msprop:Generator_ColumnPropNameInTable="EANColumn" msprop:Generator_UserColumnName="EAN" type="xs:string" minOccurs="0" />
+              <xs:element name="UPC" msprop:Generator_ColumnVarNameInTable="columnUPC" msprop:Generator_ColumnPropNameInRow="UPC" msprop:Generator_ColumnPropNameInTable="UPCColumn" msprop:Generator_UserColumnName="UPC" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Part" msprop:Generator_TableClassName="PartDataTable" msprop:Generator_TableVarName="tablePart" msprop:Generator_RowChangedName="PartRowChanged" msprop:Generator_TablePropName="Part" msprop:Generator_RowDeletingName="PartRowDeleting" msprop:Generator_RowChangingName="PartRowChanging" msprop:Generator_RowEvHandlerName="PartRowChangeEventHandler" msprop:Generator_RowDeletedName="PartRowDeleted" msprop:Generator_RowClassName="PartRow" msprop:Generator_UserTableName="Part" msprop:Generator_RowEvArgName="PartRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Count" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" default="0" minOccurs="0" />
+              <xs:element name="MoldId" msprop:Generator_ColumnVarNameInTable="columnMoldId" msprop:Generator_ColumnPropNameInRow="MoldId" msprop:Generator_ColumnPropNameInTable="MoldIdColumn" msprop:Generator_UserColumnName="MoldId" type="xs:long" minOccurs="0" />
+              <xs:element name="ColorId" msprop:Generator_ColumnVarNameInTable="columnColorId" msprop:Generator_ColumnPropNameInRow="ColorId" msprop:Generator_ColumnPropNameInTable="ColorIdColumn" msprop:Generator_UserColumnName="ColorId" type="xs:long" minOccurs="0" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SetPart" msprop:Generator_TableClassName="SetPartDataTable" msprop:Generator_TableVarName="tableSetPart" msprop:Generator_RowChangedName="SetPartRowChanged" msprop:Generator_TablePropName="SetPart" msprop:Generator_RowDeletingName="SetPartRowDeleting" msprop:Generator_RowChangingName="SetPartRowChanging" msprop:Generator_RowEvHandlerName="SetPartRowChangeEventHandler" msprop:Generator_RowDeletedName="SetPartRowDeleted" msprop:Generator_RowClassName="SetPartRow" msprop:Generator_UserTableName="SetPart" msprop:Generator_RowEvArgName="SetPartRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="SetId" msprop:Generator_ColumnVarNameInTable="columnSetId" msprop:Generator_ColumnPropNameInRow="SetId" msprop:Generator_ColumnPropNameInTable="SetIdColumn" msprop:Generator_UserColumnName="SetId" type="xs:long" minOccurs="0" />
+              <xs:element name="PartId" msprop:Generator_ColumnVarNameInTable="columnPartId" msprop:Generator_ColumnPropNameInRow="PartId" msprop:Generator_ColumnPropNameInTable="PartIdColumn" msprop:Generator_UserColumnName="PartId" type="xs:long" minOccurs="0" />
+              <xs:element name="Count" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" default="0" minOccurs="0" />
+              <xs:element name="CountSpare" msprop:Generator_ColumnVarNameInTable="columnCountSpare" msprop:Generator_ColumnPropNameInRow="CountSpare" msprop:Generator_ColumnPropNameInTable="CountSpareColumn" msprop:Generator_UserColumnName="CountSpare" type="xs:int" default="0" minOccurs="0" />
+              <xs:element name="CountMissing" msprop:Generator_ColumnVarNameInTable="columnCountMissing" msprop:Generator_ColumnPropNameInRow="CountMissing" msprop:Generator_ColumnPropNameInTable="CountMissingColumn" msprop:Generator_UserColumnName="CountMissing" type="xs:int" default="0" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Mold" msprop:Generator_TableClassName="MoldDataTable" msprop:Generator_TableVarName="tableMold" msprop:Generator_RowChangedName="MoldRowChanged" msprop:Generator_TablePropName="Mold" msprop:Generator_RowDeletingName="MoldRowDeleting" msprop:Generator_RowChangingName="MoldRowChanging" msprop:Generator_RowEvHandlerName="MoldRowChangeEventHandler" msprop:Generator_RowDeletedName="MoldRowDeleted" msprop:Generator_RowClassName="MoldRow" msprop:Generator_UserTableName="Mold" msprop:Generator_RowEvArgName="MoldRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="CategoryId" msprop:Generator_ColumnVarNameInTable="columnCategoryId" msprop:Generator_ColumnPropNameInRow="CategoryId" msprop:Generator_ColumnPropNameInTable="CategoryIdColumn" msprop:Generator_UserColumnName="CategoryId" type="xs:long" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Color" msprop:Generator_TableClassName="ColorDataTable" msprop:Generator_TableVarName="tableColor" msprop:Generator_RowChangedName="ColorRowChanged" msprop:Generator_TablePropName="Color" msprop:Generator_RowDeletingName="ColorRowDeleting" msprop:Generator_RowChangingName="ColorRowChanging" msprop:Generator_RowEvHandlerName="ColorRowChangeEventHandler" msprop:Generator_RowDeletedName="ColorRowDeleted" msprop:Generator_RowClassName="ColorRow" msprop:Generator_UserTableName="Color" msprop:Generator_RowEvArgName="ColorRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="LDrawColorId" msprop:Generator_ColumnVarNameInTable="columnLDrawColorId" msprop:Generator_ColumnPropNameInRow="LDrawColorId" msprop:Generator_ColumnPropNameInTable="LDrawColorIdColumn" msprop:Generator_UserColumnName="LDrawColorId" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Theme" msprop:Generator_TableClassName="ThemeDataTable" msprop:Generator_TableVarName="tableTheme" msprop:Generator_RowChangedName="ThemeRowChanged" msprop:Generator_TablePropName="Theme" msprop:Generator_RowDeletingName="ThemeRowDeleting" msprop:Generator_RowChangingName="ThemeRowChanging" msprop:Generator_RowEvHandlerName="ThemeRowChangeEventHandler" msprop:Generator_RowDeletedName="ThemeRowDeleted" msprop:Generator_RowClassName="ThemeRow" msprop:Generator_UserTableName="Theme" msprop:Generator_RowEvArgName="ThemeRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SubTheme" msprop:Generator_TableClassName="SubThemeDataTable" msprop:Generator_TableVarName="tableSubTheme" msprop:Generator_RowChangedName="SubThemeRowChanged" msprop:Generator_TablePropName="SubTheme" msprop:Generator_RowDeletingName="SubThemeRowDeleting" msprop:Generator_RowChangingName="SubThemeRowChanging" msprop:Generator_RowEvHandlerName="SubThemeRowChangeEventHandler" msprop:Generator_RowDeletedName="SubThemeRowDeleted" msprop:Generator_RowClassName="SubThemeRow" msprop:Generator_UserTableName="SubTheme" msprop:Generator_RowEvArgName="SubThemeRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="ThemeId" msprop:Generator_ColumnVarNameInTable="columnThemeId" msprop:Generator_ColumnPropNameInRow="ThemeId" msprop:Generator_ColumnPropNameInTable="ThemeIdColumn" msprop:Generator_UserColumnName="ThemeId" type="xs:long" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Category" msprop:Generator_TableClassName="CategoryDataTable" msprop:Generator_TableVarName="tableCategory" msprop:Generator_TablePropName="Category" msprop:Generator_RowDeletingName="CategoryRowDeleting" msprop:Generator_RowChangingName="CategoryRowChanging" msprop:Generator_RowEvHandlerName="CategoryRowChangeEventHandler" msprop:Generator_RowDeletedName="CategoryRowDeleted" msprop:Generator_UserTableName="Category" msprop:Generator_RowChangedName="CategoryRowChanged" msprop:Generator_RowEvArgName="CategoryRowChangeEvent" msprop:Generator_RowClassName="CategoryRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ExtId" msprop:Generator_TableClassName="ExtIdDataTable" msprop:Generator_TableVarName="tableExtId" msprop:Generator_TablePropName="ExtId" msprop:Generator_RowDeletingName="ExtIdRowDeleting" msprop:Generator_RowChangingName="ExtIdRowChanging" msprop:Generator_RowEvHandlerName="ExtIdRowChangeEventHandler" msprop:Generator_RowDeletedName="ExtIdRowDeleted" msprop:Generator_UserTableName="ExtId" msprop:Generator_RowChangedName="ExtIdRowChanged" msprop:Generator_RowEvArgName="ExtIdRowChangeEvent" msprop:Generator_RowClassName="ExtIdRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="ExtTypeId" msprop:Generator_ColumnVarNameInTable="columnExtTypeId" msprop:Generator_ColumnPropNameInRow="ExtTypeId" msprop:Generator_ColumnPropNameInTable="ExtTypeIdColumn" msprop:Generator_UserColumnName="ExtTypeId" type="xs:long" minOccurs="0" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="xs:string" minOccurs="0" />
+              <xs:element name="PartId" msprop:Generator_ColumnVarNameInTable="columnPartId" msprop:Generator_ColumnPropNameInRow="PartId" msprop:Generator_ColumnPropNameInTable="PartIdColumn" msprop:Generator_UserColumnName="PartId" type="xs:long" minOccurs="0" />
+              <xs:element name="MoldId" msprop:Generator_ColumnVarNameInTable="columnMoldId" msprop:Generator_ColumnPropNameInRow="MoldId" msprop:Generator_ColumnPropNameInTable="MoldIdColumn" msprop:Generator_UserColumnName="MoldId" type="xs:long" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ExtType" msprop:Generator_TableClassName="ExtTypeDataTable" msprop:Generator_TableVarName="tableExtType" msprop:Generator_TablePropName="ExtType" msprop:Generator_RowDeletingName="ExtTypeRowDeleting" msprop:Generator_RowChangingName="ExtTypeRowChanging" msprop:Generator_RowEvHandlerName="ExtTypeRowChangeEventHandler" msprop:Generator_RowDeletedName="ExtTypeRowDeleted" msprop:Generator_UserTableName="ExtType" msprop:Generator_RowChangedName="ExtTypeRowChanged" msprop:Generator_RowEvArgName="ExtTypeRowChangeEvent" msprop:Generator_RowClassName="ExtTypeRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:long" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:Set" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Part_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Part" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Constraint3">
+      <xs:selector xpath=".//mstns:SetPart" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Mold_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Mold" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Color_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Color" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Theme_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Theme" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="SubTheme_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:SubTheme" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Category_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Category" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="ExtId_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:ExtId" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="ExtType_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:ExtType" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:keyref name="FK_ExtType_ExtId" refer="ExtType_Constraint1" msprop:rel_Generator_UserChildTable="ExtId" msprop:rel_Generator_ChildPropName="GetExtIdRows" msprop:rel_Generator_UserRelationName="FK_ExtType_ExtId" msprop:rel_Generator_RelationVarName="relationFK_ExtType_ExtId" msprop:rel_Generator_UserParentTable="ExtType" msprop:rel_Generator_ParentPropName="ExtTypeRow">
+      <xs:selector xpath=".//mstns:ExtId" />
+      <xs:field xpath="mstns:ExtTypeId" />
+    </xs:keyref>
+    <xs:keyref name="FK_SubTheme_Theme" refer="Theme_Constraint1" msprop:rel_Generator_UserChildTable="SubTheme" msprop:rel_Generator_ChildPropName="GetSubThemeRows" msprop:rel_Generator_UserRelationName="FK_SubTheme_Theme" msprop:rel_Generator_ParentPropName="ThemeRow" msprop:rel_Generator_RelationVarName="relationFK_SubTheme_Theme" msprop:rel_Generator_UserParentTable="Theme">
+      <xs:selector xpath=".//mstns:SubTheme" />
+      <xs:field xpath="mstns:ThemeId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Mold_Category" refer="Category_Constraint1" msprop:rel_Generator_UserChildTable="Mold" msprop:rel_Generator_ChildPropName="GetMoldRows" msprop:rel_Generator_UserRelationName="FK_Mold_Category" msprop:rel_Generator_RelationVarName="relationFK_Mold_Category" msprop:rel_Generator_UserParentTable="Category" msprop:rel_Generator_ParentPropName="CategoryRow">
+      <xs:selector xpath=".//mstns:Mold" />
+      <xs:field xpath="mstns:CategoryId" />
+    </xs:keyref>
+    <xs:keyref name="FK_SetPart_Set" refer="Constraint1" msprop:rel_Generator_UserChildTable="SetPart" msprop:rel_Generator_ChildPropName="GetSetPartRows" msprop:rel_Generator_UserRelationName="FK_SetPart_Set" msprop:rel_Generator_ParentPropName="SetRow" msprop:rel_Generator_RelationVarName="relationFK_SetPart_Set" msprop:rel_Generator_UserParentTable="Set">
+      <xs:selector xpath=".//mstns:SetPart" />
+      <xs:field xpath="mstns:SetId" />
+    </xs:keyref>
+    <xs:keyref name="FK_SetPart_Part" refer="Part_Constraint1" msprop:rel_Generator_UserChildTable="SetPart" msprop:rel_Generator_ChildPropName="GetSetPartRows" msprop:rel_Generator_UserRelationName="FK_SetPart_Part" msprop:rel_Generator_ParentPropName="PartRow" msprop:rel_Generator_RelationVarName="relationFK_SetPart_Part" msprop:rel_Generator_UserParentTable="Part">
+      <xs:selector xpath=".//mstns:SetPart" />
+      <xs:field xpath="mstns:PartId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Part_Mold" refer="Mold_Constraint1" msprop:rel_Generator_UserChildTable="Part" msprop:rel_Generator_ChildPropName="GetPartRows" msprop:rel_Generator_UserRelationName="FK_Part_Mold" msprop:rel_Generator_RelationVarName="relationFK_Part_Mold" msprop:rel_Generator_UserParentTable="Mold" msprop:rel_Generator_ParentPropName="MoldRow">
+      <xs:selector xpath=".//mstns:Part" />
+      <xs:field xpath="mstns:MoldId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Part_Color" refer="Color_Constraint1" msprop:rel_Generator_UserChildTable="Part" msprop:rel_Generator_ChildPropName="GetPartRows" msprop:rel_Generator_UserRelationName="FK_Part_Color" msprop:rel_Generator_RelationVarName="relationFK_Part_Color" msprop:rel_Generator_UserParentTable="Color" msprop:rel_Generator_ParentPropName="ColorRow">
+      <xs:selector xpath=".//mstns:Part" />
+      <xs:field xpath="mstns:ColorId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Set_SubTheme" refer="SubTheme_Constraint1" msprop:rel_Generator_UserChildTable="Set" msprop:rel_Generator_ChildPropName="GetSetRows" msprop:rel_Generator_UserRelationName="FK_Set_SubTheme" msprop:rel_Generator_RelationVarName="relationFK_Set_SubTheme" msprop:rel_Generator_UserParentTable="SubTheme" msprop:rel_Generator_ParentPropName="SubThemeRow">
+      <xs:selector xpath=".//mstns:Set" />
+      <xs:field xpath="mstns:SubThemeId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Set_Theme" refer="Theme_Constraint1" msprop:rel_Generator_UserChildTable="Set" msprop:rel_Generator_ChildPropName="GetSetRows" msprop:rel_Generator_UserRelationName="FK_Set_Theme" msprop:rel_Generator_RelationVarName="relationFK_Set_Theme" msprop:rel_Generator_UserParentTable="Theme" msprop:rel_Generator_ParentPropName="ThemeRow">
+      <xs:selector xpath=".//mstns:Set" />
+      <xs:field xpath="mstns:ThemeId" />
+    </xs:keyref>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="Part_ExtId" msdata:parent="Part" msdata:child="ExtId" msdata:parentkey="Id" msdata:childkey="PartId" msprop:Generator_UserChildTable="ExtId" msprop:Generator_ChildPropName="GetExtIdRows" msprop:Generator_UserRelationName="Part_ExtId" msprop:Generator_ParentPropName="PartRow" msprop:Generator_RelationVarName="relationPart_ExtId" msprop:Generator_UserParentTable="Part" />
+      <msdata:Relationship name="Mold_ExtId" msdata:parent="Mold" msdata:child="ExtId" msdata:parentkey="Id" msdata:childkey="MoldId" msprop:Generator_UserChildTable="ExtId" msprop:Generator_ChildPropName="GetExtIdRows" msprop:Generator_UserRelationName="Mold_ExtId" msprop:Generator_ParentPropName="MoldRow" msprop:Generator_RelationVarName="relationMold_ExtId" msprop:Generator_UserParentTable="Mold" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>
