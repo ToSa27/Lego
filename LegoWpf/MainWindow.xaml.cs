@@ -28,10 +28,14 @@ namespace LegoWpf
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Lego.Connection.Connect();
-            Lego.Connection.LoadReferenceData();
-            Lego.Connection.LoadMySets();
-            Lego.Connection.Save();
+            try
+            {
+                Lego.Connection.Connect();
+                Lego.Connection.Save();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

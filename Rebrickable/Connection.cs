@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -87,6 +88,13 @@ namespace Rebrickable
             return Call("get_part", false, new Dictionary<String, String>() { { "part_id", partid }, { "inc_rels", "1" }, { "inc_ext", "1" } }, "root");
         }
 
+        public XmlNodeList GetElement(string elementid)
+        {
+            if (!_IsOpen)
+                return null;
+            return Call("get_element", false, new Dictionary<String, String>() { { "element_id", elementid } }, "root");
+        }
+
         public XmlNodeList SearchSets(string pattern)
         {
             if (!_IsOpen)
@@ -117,5 +125,28 @@ namespace Rebrickable
             return xd.SelectNodes("root/sets/set");
         }
 
+        public XmlNodeList GetUserParts()
+        {
+            if (!_IsOpen)
+                return null;
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(Call("get_user_parts", true, null));
+            return xd.SelectNodes("root/parts/part");
+        }
+
+        public XmlNodeList GetUserLostParts()
+        {
+            if (!_IsOpen)
+                return null;
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(Call("get_user_lost_parts", true, null));
+            return xd.SelectNodes("root/parts/part");
+        }
+
+        public Bitmap GetColorImage(string LDrawColorId)
+        {
+            WebRequest req = WebRequest.Create(string.Format("http://rebrickable.com/img/pieces/{0}/3003.png", LDrawColorId));
+            return new Bitmap(req.GetResponse().GetResponseStream());
+        }
     }
 }
