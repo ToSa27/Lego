@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -7,6 +10,7 @@ using System.Xml;
 namespace Lego
 {
     public partial class LegoDS {
+
         partial class ExtIdTypeDataTable
         {
             public ExtIdTypeRow GetByName(string Name)
@@ -128,7 +132,246 @@ namespace Lego
                 return er;
             }
         }
-    
+
+        partial class SetContentRow
+        {
+            public string ImageUrl
+            {
+                get
+                {
+                    if (ElementRow != null)
+                        return string.Format("http://img.rebrickable.com/img/pieces/elements/{0}.jpg", ElementRow.Number);
+                    if (PartRow != null && ColorRow != null)
+                        return string.Format("http://img.rebrickable.com/img/pieces/{0}/{1}.png", ColorRow.LDrawColorId, PartRow.Number);
+                    return string.Empty;
+                }
+            }
+        }
+
+        partial class BuildDiffRow
+        {
+            public string ImageUrl
+            {
+                get
+                {
+                    if (ElementRow != null)
+                        return string.Format("http://img.rebrickable.com/img/pieces/elements/{0}.jpg", ElementRow.Number);
+                    if (PartRow != null && ColorRow != null)
+                        return string.Format("http://img.rebrickable.com/img/pieces/{0}/{1}.png", ColorRow.LDrawColorId, PartRow.Number);
+                    return string.Empty;
+                }
+            }
+        }
+
+        partial class ElementRow
+        {
+            public string ImageUrl
+            {
+                get
+                {
+                    return string.Format("http://img.rebrickable.com/img/pieces/elements/{0}.jpg", Number);
+                }
+            }
+
+            public int CountInSets
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetSoloSet() && r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.Count * (scr.Count + scr.CountSpare));
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+
+            public int CountBuilt
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetSoloSet() && r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.CountBuilt * scr.Count);
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+
+            public int CountAvailable
+            {
+                get
+                {
+                    return CountTotal - CountBuilt;
+                }
+            }
+
+            public int CountSolo
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow == ds.Set.GetSoloSet()
+                            select r;
+                    if (q.Any())
+                        return q.First().Count;
+                    else
+                        return 0;
+                }
+            }
+
+            public int CountTotal
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.Count * (scr.Count + scr.CountSpare));
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+        }
+
+        partial class BuildRow
+        {
+            public void Unbuild()
+            {
+                LegoDS ds = this.Table.DataSet as LegoDS;
+                List<BuildDiffRow> drs = new List<BuildDiffRow>(this.GetBuildDiffRows());
+                while (drs.Count > 0)
+                {
+                    BuildDiffRow dr = drs[0];
+                    drs.Remove(dr);
+                    ds.BuildDiff.RemoveBuildDiffRow(dr);
+                }
+                ds.Build.RemoveBuildRow(this);
+            }
+        }
+
+        partial class SetRow : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public void OnPropertyChanged(string Property)
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(Property));
+            }
+
+            public int CountBuilt
+            {
+                get
+                {
+                    return GetBuildRows().Count();
+                }
+            }
+
+            public BuildRow AddBuild()
+            {
+                LegoDS ds = this.Table.DataSet as LegoDS;
+                LegoDS.BuildRow br = ds.Build.NewBuildRow();
+                br.SetRow = this;
+                ds.Build.AddBuildRow(br);
+                OnPropertyChanged("CountBuilt");
+                return br;
+            }
+        }
+
+        partial class PartRow
+        {
+            public string ImageUrl
+            {
+                get
+                {
+                    return string.Format("http://img.rebrickable.com/img/pieces/-1/{0}.png", Number);
+                }
+            }
+
+            public int CountInSets
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetSoloSet() && r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.Count * (scr.Count + scr.CountSpare));
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+
+            public int CountBuilt
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetSoloSet() && r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.CountBuilt * scr.Count);
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+
+            public int CountAvailable
+            {
+                get
+                {
+                    return CountTotal - CountBuilt;
+                }
+            }
+
+            public int CountSolo
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow == ds.Set.GetSoloSet()
+                            select r;
+                    if (q.Any())
+                        return q.First().Count;
+                    else
+                        return 0;
+                }
+            }
+
+            public int CountTotal
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                            where r.SetRow != ds.Set.GetWishlistSet()
+                            select r;
+                    int res = 0;
+                    foreach (SetContentRow scr in q)
+                        res += (scr.SetRow.Count * (scr.Count + scr.CountSpare));
+                    // ToDo : count missing
+                    return res;
+                }
+            }
+        }
+
         partial class PartDataTable
         {
             private PartRow Fetch(string PartId)
@@ -175,12 +418,14 @@ namespace Lego
                         {
                             if (rbExtId.Name == "lego_element_ids")
                             {
+                                /*
                                 foreach (XmlNode LEId in rbExtId.SelectNodes("element"))
                                 {
                                     string ElementId = LEId.SelectSingleNode("element_id").InnerText;
                                     string ColorId = LEId.SelectSingleNode("color").InnerText;
                                     ElementRow er = ds.Element.GetOrCreate(ElementId, PartId, ColorId);
                                 }
+                                */
                             }
                             else
                             {
@@ -281,30 +526,23 @@ namespace Lego
             {
                 LegoDS ds = (LegoDS)this.DataSet;
                 PartRow pr = ds.Part.GetById(PartId);
+                ColorRow cr = null;
+                if (!string.IsNullOrEmpty(ColorId))
+                    cr = ds.Color.GetByLDrawColorId(ColorId);
                 ElementRow er = null;
                 if (!string.IsNullOrEmpty(ElementId))
                     er = ds.Element.GetById(ElementId);
                 else
-                    er = ds.Element.GetByPartAndColor(pr, ds.Color.GetByLDrawColorId(ColorId));
+                    er = ds.Element.GetByPartAndColor(pr, cr);
                 var q = from r in ds.SetContent.AsEnumerable()
                         where r.SetRow == sr && r.ElementRow == er && r.PartRow == pr
                         select r;
+                bool newrow = true;
                 LegoDS.SetContentRow scr;
                 if (q.Any())
                 {
                     scr = q.First();
-                    switch (Type)
-                    {
-                        case PartCountType.normal:
-                            scr.Count = Count;
-                            break;
-                        case PartCountType.spare:
-                            scr.CountSpare = Count;
-                            break;
-                        case PartCountType.missing:
-                            scr.CountBuiltMissing = Count;
-                            break;
-                    }
+                    newrow = false;
                 }
                 else
                 {
@@ -312,20 +550,22 @@ namespace Lego
                     scr.SetRow = sr;
                     scr.ElementRow = er;
                     scr.PartRow = pr;
-                    switch (Type)
-                    {
-                        case PartCountType.normal:
-                            scr.Count = Count;
-                            break;
-                        case PartCountType.spare:
-                            scr.CountSpare = Count;
-                            break;
-                        case PartCountType.missing:
-                            scr.CountBuiltMissing = Count;
-                            break;
-                    }
-                    ds.SetContent.AddSetContentRow(scr);
+                    scr.ColorRow = cr;
                 }
+                switch (Type)
+                {
+                    case PartCountType.normal:
+                        scr.Count = Count;
+                        break;
+                    case PartCountType.spare:
+                        scr.CountSpare = Count;
+                        break;
+                    case PartCountType.missing:
+                        scr.CountBuiltMissing = Count;
+                        break;
+                }
+                if (newrow)
+                    ds.SetContent.AddSetContentRow(scr);
             }
         }
 
@@ -368,7 +608,7 @@ namespace Lego
             private SetRow Fetch(string SetId)
             {
                 LegoDS ds = (LegoDS)this.DataSet;
-                XmlNode rbSet = Lego.Connection.rb.GetSet(SetId)[0];
+                XmlNode rbSet = ds.rb.GetSet(SetId)[0];
                 SetRow sr = NewSetRow();
                 sr.Number = SetId;
                 sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
@@ -423,7 +663,8 @@ namespace Lego
         {
             public void FetchAll()
             {
-                XmlNodeList rbColors = Lego.Connection.rb.GetColors();
+                LegoDS ds = (LegoDS)this.DataSet;
+                XmlNodeList rbColors = ds.rb.GetColors();
                 foreach (XmlNode rbColor in rbColors)
                 {
                     string lcid = rbColor.SelectSingleNode("ldraw_color_id").InnerText.Trim();
@@ -458,6 +699,37 @@ namespace Lego
                 if (q.Any())
                     return q.First();
                 return null;
+            }
+        }
+
+        partial class InventoryRow : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public void OnPropertyChanged(string Property)
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(Property));
+            }
+
+            public void SetCount(int NewCount)
+            {
+                this.Count = NewCount;
+                OnPropertyChanged("Count");
+            }
+
+            private int _CountBin = 0;
+            public int CountBin
+            {
+                get
+                { 
+                    return _CountBin; 
+                }
+                set 
+                { 
+                    _CountBin = value;
+                    OnPropertyChanged("CountBin");
+                }
             }
         }
     }
