@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -62,17 +63,53 @@ namespace LegoWpf
                 t.Stop();
                 Dispatcher.Invoke((Action)delegate { 
                     tbStatus.Text = "Loading Data Completed.\n" + Lego.Connection.Status;
-                    lvSets.ItemsSource = Lego.Connection.ds.Set.Rows;
-                    lvBuilds.ItemsSource = Lego.Connection.ds.Build.Rows;
-                    lvParts.ItemsSource = Lego.Connection.ds.Part.Rows;
-                    lvElements.ItemsSource = Lego.Connection.ds.Element.Rows;
-                    //cbAdditional.ItemsSource = Lego.Connection.ds.Element.Rows;
-                    cbContainer.ItemsSource = Lego.Connection.ds.Container.Rows;
-                    cbBin.ItemsSource = Lego.Connection.ds.Bin.Rows;
+                    Lego.LegoDS ds = Lego.Connection.ds;
+                    lvSets.ItemsSource = ds.Set.Rows;
+                    lvBuilds.ItemsSource = ds.Build.Rows;
+                    lvParts.ItemsSource = ds.Part.Rows;
+                    CollectionView cvParts = (CollectionView)CollectionViewSource.GetDefaultView(lvParts.ItemsSource);
+                    cvParts.Filter = PartFilter;
+                    lvElements.ItemsSource = ds.Element.Rows;
+                    CollectionView cvElements = (CollectionView)CollectionViewSource.GetDefaultView(lvElements.ItemsSource);
+                    cvElements.Filter = ElementFilter;
+                    //cbAdditional.ItemsSource = ds.Element.Rows;
+                    cbContainer.ItemsSource = ds.Container.Rows;
+                    cbBin.ItemsSource = ds.Bin.Rows;
+                    cbColor.ItemsSource = ds.Color.Rows;
+                    lvInventoryData.ItemsSource = ds.Inventory.Rows;
+                    CollectionView cvInventoryData = (CollectionView)CollectionViewSource.GetDefaultView(lvInventoryData.ItemsSource);
+                    cvInventoryData.SortDescriptions.Clear();
+                    cvInventoryData.SortDescriptions.Add(new SortDescription("Date", ListSortDirection.Ascending));
+                    cvInventoryData.SortDescriptions.Add(new SortDescription("PartRow.Name", ListSortDirection.Ascending));
+                    cvInventoryData.SortDescriptions.Add(new SortDescription("ColorRow.LDrawColorId", ListSortDirection.Ascending));
+                    cvInventoryData.Refresh();
                     tcMain.SelectedItem = tiSets;
                 });
                 Lego.Connection.Save();
             }
+        }
+
+        private bool PartFilter(object item)
+        {
+            if (string.IsNullOrEmpty(tbPartFilter.Text))
+                return true;
+            Lego.LegoDS.PartRow pr = (item as Lego.LegoDS.PartRow);
+            if (pr.IsNull("Name"))
+                return false;
+            return (pr.Name.IndexOf(tbPartFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        private bool ElementFilter(object item)
+        {
+            if (string.IsNullOrEmpty(tbElementFilter.Text))
+                return true;
+            Lego.LegoDS.ElementRow er = (item as Lego.LegoDS.ElementRow);
+            Lego.LegoDS.PartRow pr = er.PartRow;
+            if (pr == null)
+                return false;
+            if (pr.IsNull("Name"))
+                return false;
+            return (pr.Name.IndexOf(tbElementFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -95,12 +132,19 @@ namespace LegoWpf
             }
         }
 
+        private void RefreshListView(ListView lv)
+        {
+            ((CollectionView)CollectionViewSource.GetDefaultView(lv.ItemsSource)).Refresh();
+            lv.Items.Refresh();
+        }
+
         private void bnBuild_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 Lego.LegoDS.SetRow sr = tiSet.DataContext as Lego.LegoDS.SetRow;
                 Lego.LegoDS.BuildRow br = sr.AddBuild();
+                RefreshListView(lvBuilds);
             }
             catch
             {
@@ -137,6 +181,7 @@ namespace LegoWpf
                 bdr.ColorRow = scr.ColorRow;
                 bdr.CountDiff = -Math.Abs(int.Parse(tbMissing.Text));
                 ds.BuildDiff.AddBuildDiffRow(bdr);
+                RefreshListView(lvBuild);
             }
         }
 
@@ -154,6 +199,7 @@ namespace LegoWpf
                 bdr.ColorRow = er.ColorRow;
                 bdr.CountDiff = Math.Abs(int.Parse(tbAdditional.Text));
                 ds.BuildDiff.AddBuildDiffRow(bdr);
+                RefreshListView(lvBuild);
             }
         }
 
@@ -163,6 +209,7 @@ namespace LegoWpf
             {
                 Lego.LegoDS.BuildRow br = tiBuild.DataContext as Lego.LegoDS.BuildRow;
                 br.Unbuild();
+                RefreshListView(lvBuilds);
             }
             catch
             {
@@ -177,6 +224,12 @@ namespace LegoWpf
             Button b = sender as Button;
             string pid = b.Tag as string;
             Lego.LegoDS.PartRow pr = ds.Part.GetById(pid);
+            StartInventory(pr);
+        }
+
+        private void StartInventory(Lego.LegoDS.PartRow pr)
+        {
+            Lego.LegoDS ds = Lego.Connection.ds;
             TempInventoryRows = new ObservableCollection<Lego.LegoDS.InventoryRow>();
             foreach (Lego.LegoDS.ElementRow er in pr.GetElementRows())
             {
@@ -212,9 +265,9 @@ namespace LegoWpf
         {
             Lego.LegoDS ds = Lego.Connection.ds;
             Button b = sender as Button;
-            string eid = b.Tag as string;
+            Int64 iid = Int64.Parse(b.Tag.ToString());
             foreach (Lego.LegoDS.InventoryRow ir in TempInventoryRows)
-                if (ir.ElementRow.Number == eid)
+                if (ir.Id == iid)
                     ir.CountBin = ir.CountBin - 1;
         }
 
@@ -222,9 +275,9 @@ namespace LegoWpf
         {
             Lego.LegoDS ds = Lego.Connection.ds;
             Button b = sender as Button;
-            string eid = b.Tag as string;
+            Int64 iid = Int64.Parse(b.Tag.ToString());
             foreach (Lego.LegoDS.InventoryRow ir in TempInventoryRows)
-                if (ir.ElementRow.Number == eid)
+                if (ir.Id == iid)
                     ir.CountBin = ir.CountBin + 1;
         }
 
@@ -232,10 +285,15 @@ namespace LegoWpf
         {
             Lego.LegoDS ds = Lego.Connection.ds;
             Button b = sender as Button;
-            string eid = b.Tag as string;
+            Int64 iid = Int64.Parse(b.Tag.ToString());
             foreach (Lego.LegoDS.InventoryRow ir in TempInventoryRows)
-                if (ir.ElementRow.Number == eid)
-                    ir.SetCount(ir.CountBin + ir.ElementRow.CountBuilt);
+                if (ir.Id == iid)
+                {
+                    int c = ir.CountBin;
+                    if (ir.ElementRow != null)
+                        c += ir.ElementRow.CountBuilt;
+                    ir.SetCount(c);
+                }
         }
 
         private void bnContainerNew_Click(object sender, RoutedEventArgs e)
@@ -299,5 +357,87 @@ namespace LegoWpf
                 ds.BuildDiff.RemoveBuildDiffRow(dr);
             }
         }
+
+        private void bnColorAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Lego.LegoDS ds = Lego.Connection.ds;
+            Lego.LegoDS.PartRow pr = tiInventory.DataContext as Lego.LegoDS.PartRow;
+            Lego.LegoDS.ColorRow cr = cbColor.SelectedItem as Lego.LegoDS.ColorRow;
+            Lego.LegoDS.ElementRow er = ds.Element.FetchByPartAndColor(pr, cr);
+            Lego.LegoDS.InventoryRow ir = ds.Inventory.NewInventoryRow();
+            ir.PartRow = pr;
+            ir.ElementRow = er;
+            ir.ColorRow = cr;
+            ir.Date = DateTime.Now;
+            TempInventoryRows.Add(ir);
+        }
+
+        private void bnInventoryElement_Click(object sender, RoutedEventArgs e)
+        {
+            Lego.LegoDS ds = Lego.Connection.ds;
+            Button b = sender as Button;
+            string eid = b.Tag as string;
+            Lego.LegoDS.ElementRow er = ds.Element.GetById(eid);
+            StartInventory(er.PartRow);
+        }
+
+        private void tbPartFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(lvParts.ItemsSource).Refresh();
+        }
+
+        private void tbElementFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(lvElements.ItemsSource).Refresh();
+        }
+
+        private void bnPartSortNumber_Click(object sender, RoutedEventArgs e)
+        {
+            CollectionView cvParts = (CollectionView)CollectionViewSource.GetDefaultView(lvParts.ItemsSource);
+            cvParts.SortDescriptions.Clear();
+            cvParts.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            cvParts.Refresh();
+        }
+
+        private void bnPartSortName_Click(object sender, RoutedEventArgs e)
+        {
+            CollectionView cvParts = (CollectionView)CollectionViewSource.GetDefaultView(lvParts.ItemsSource);
+            cvParts.SortDescriptions.Clear();
+            cvParts.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            cvParts.Refresh();
+        }
+
+        private void bnElementSortNumber_Click(object sender, RoutedEventArgs e)
+        {
+            CollectionView cvElements = (CollectionView)CollectionViewSource.GetDefaultView(lvElements.ItemsSource);
+            cvElements.SortDescriptions.Clear();
+            cvElements.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            cvElements.Refresh();
+        }
+
+        private void bnElementSortName_Click(object sender, RoutedEventArgs e)
+        {
+            CollectionView cvElements = (CollectionView)CollectionViewSource.GetDefaultView(lvElements.ItemsSource);
+            cvElements.SortDescriptions.Clear();
+            cvElements.SortDescriptions.Add(new SortDescription("PartRow.Name", ListSortDirection.Ascending));
+            cvElements.Refresh();
+        }
+
+        private void bnElementSortColor_Click(object sender, RoutedEventArgs e)
+        {
+            CollectionView cvElements = (CollectionView)CollectionViewSource.GetDefaultView(lvElements.ItemsSource);
+            cvElements.SortDescriptions.Clear();
+            cvElements.SortDescriptions.Add(new SortDescription("ColorRow.Color", ListSortDirection.Ascending));
+            cvElements.Refresh();
+        }
+
+        private void bnBuildNew_Click(object sender, RoutedEventArgs e)
+        {
+            Lego.LegoDS ds = Lego.Connection.ds;
+            Lego.LegoDS.SetRow sr = ds.Set.GetById(tbBuildNew.Text);
+            Lego.LegoDS.BuildRow br = sr.AddBuild();
+            RefreshListView(lvBuilds);
+        }
+
     }
 }

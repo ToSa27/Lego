@@ -103,6 +103,39 @@ namespace Lego
                 return null;
             }
 
+            public ElementRow FetchByPartAndColor(PartRow pr, ColorRow cr)
+            {
+                ElementRow er = GetByPartAndColor(pr, cr);
+                if (er == null)
+                {
+                    try
+                    {
+                        LegoDS ds = (LegoDS)this.DataSet;
+                        XmlNode rbPart = null;
+                        rbPart = ds.rb.GetPart(pr.Number)[0];
+                        foreach (XmlNode rbExtId in rbPart.SelectSingleNode("external_part_ids").ChildNodes)
+                        {
+                            if (rbExtId.Name == "lego_element_ids")
+                            {
+                                foreach (XmlNode LEId in rbExtId.SelectNodes("element"))
+                                {
+                                    if (LEId.SelectSingleNode("color").InnerText == cr.LDrawColorId)
+                                    {
+                                        string ElementId = LEId.SelectSingleNode("element_id").InnerText;
+                                        er = ds.Element.GetOrCreate(ElementId, pr.Number, cr.LDrawColorId);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+                return er;
+            }
+
             public ElementRow Create(string ElementId, string PartId, string ColorId)
             {
                 LegoDS ds = (LegoDS)this.DataSet;
@@ -173,6 +206,20 @@ namespace Lego
                 }
             }
 
+            public int Inventory
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetInventoryRows().AsEnumerable()
+                            orderby r.Date descending
+                            select r;
+                    if (q.Any())
+                        return q.First().Count;
+                    return -1;
+                }
+            }
+
             public int CountInSets
             {
                 get
@@ -194,13 +241,16 @@ namespace Lego
                 get
                 {
                     LegoDS ds = this.Table.DataSet as LegoDS;
-                    var q = from r in this.GetSetContentRows().AsEnumerable()
+                    int res = 0;
+                    var qb = from r in this.GetSetContentRows().AsEnumerable()
                             where r.SetRow != ds.Set.GetSoloSet() && r.SetRow != ds.Set.GetWishlistSet()
                             select r;
-                    int res = 0;
-                    foreach (SetContentRow scr in q)
+                    foreach (SetContentRow scr in qb)
                         res += (scr.SetRow.CountBuilt * scr.Count);
-                    // ToDo : count missing
+                    var qd = from r in this.GetBuildDiffRows().AsEnumerable()
+                             select r;
+                    foreach (BuildDiffRow bdr in qd)
+                        res += bdr.CountDiff;
                     return res;
                 }
             }
@@ -257,7 +307,11 @@ namespace Lego
                     drs.Remove(dr);
                     ds.BuildDiff.RemoveBuildDiffRow(dr);
                 }
+                SetRow sr = this.SetRow;
                 ds.Build.RemoveBuildRow(this);
+                if (sr.GetBuildRows().Count() == 0)
+                    if (sr.Count == 0)
+                        ds.Set.RemoveSetRow(sr);
             }
         }
 
@@ -297,6 +351,27 @@ namespace Lego
                 get
                 {
                     return string.Format("http://img.rebrickable.com/img/pieces/-1/{0}.png", Number);
+                }
+            }
+
+            public int Inventory
+            {
+                get
+                {
+                    LegoDS ds = this.Table.DataSet as LegoDS;
+                    var q = from r in this.GetInventoryRows().AsEnumerable()
+                            orderby r.Date descending
+                            select r;
+                    if (q.Any())
+                    {
+                        int res = 0;
+                        DateTime dti = q.First().Date;
+                        foreach (InventoryRow ir in q)
+                            if (ir.Date == dti)
+                                res += ir.Count;
+                        return res;
+                    }
+                    return -1;
                 }
             }
 
@@ -608,11 +683,22 @@ namespace Lego
             private SetRow Fetch(string SetId)
             {
                 LegoDS ds = (LegoDS)this.DataSet;
-                XmlNode rbSet = ds.rb.GetSet(SetId)[0];
                 SetRow sr = NewSetRow();
                 sr.Number = SetId;
-                sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
-                sr.ImageUrl = rbSet.SelectSingleNode("img_big").InnerText.Trim();
+                try
+                {
+                    XmlNode rbSet = ds.rb.GetSet(SetId)[0];
+                    sr.Name = rbSet.SelectSingleNode("descr").InnerText.Trim();
+                    if (rbSet.SelectSingleNode("img_big") != null)
+                        sr.ImageUrl = rbSet.SelectSingleNode("img_big").InnerText.Trim();
+                    else if (rbSet.SelectSingleNode("set_img_url") != null)
+                        sr.ImageUrl = rbSet.SelectSingleNode("set_img_url").InnerText.Trim();
+                }
+                catch
+                {
+                    sr.Name = SetId;
+                    sr.ImageUrl = string.Format("http://rebrickable.com/img/sets-b/{0}.jpg", SetId);
+                }
                 AddSetRow(sr);
                 AcceptChanges();
                 ds.SetContent.Fetch(sr);
@@ -644,6 +730,14 @@ namespace Lego
     
         partial class ColorRow
         {
+            public string ImageUrl
+            {
+                get
+                {
+                    return string.Format("http://rebrickable.com/img/pieces/{0}/3003.png", LDrawColorId);
+                }
+            }
+
             private Bitmap _Image = null;
             public Bitmap Image
             {

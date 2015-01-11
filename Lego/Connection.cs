@@ -49,7 +49,15 @@ namespace Lego
 
         public static void Save()
         {
-            ds.WriteXml(dsFile);
+            if (IsReady)
+            {
+                if (File.Exists(dsFile))
+                {
+                    string bFile = dsFile + ".backup." + DateTime.Now.ToString("yyyyMMddHHmmss");
+                    File.Copy(dsFile, bFile);
+                }
+                ds.WriteXml(dsFile);
+            }
         }
 
         public static bool IsReady = false;

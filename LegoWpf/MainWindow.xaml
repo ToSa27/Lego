@@ -67,23 +67,30 @@
                 </DockPanel>
             </TabItem>
             <TabItem Name="tiBuilds" Header="Aufbauten">
-                <ListView Name="lvBuilds" MouseDoubleClick="lvBuilds_MouseDoubleClick" ItemsSource="{Binding Path=BuildDiff}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Bild" Width="70">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Image Width="50" Height="50" Source="{Binding Path=SetRow.ImageUrl}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=SetRow.Number}" Width="75" />
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=SetRow.Name}" Width="275" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Text="Gebaut:" Margin="3" VerticalAlignment="Center" />
+                        <TextBox Name="tbBuildNew" Width="100" Margin="3" />
+                        <Button Name="bnBuildNew" Content="ok" Margin="3" Click="bnBuildNew_Click" />
+                    </StackPanel>
+                    <ListView Name="lvBuilds" MouseDoubleClick="lvBuilds_MouseDoubleClick" ItemsSource="{Binding Path=BuildDiff}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Bild" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Width="50" Height="50" Source="{Binding Path=SetRow.ImageUrl}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=SetRow.Number}" Width="75" />
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=SetRow.Name}" Width="275" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
             </TabItem>
             <TabItem Name="tiBuild" Header="Aufbau">
                 <DockPanel LastChildFill="True">
@@ -95,7 +102,7 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="27.2" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -137,7 +144,16 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Form" DisplayMemberBinding="{Binding Path=PartRow.Name}" Width="250" />
-                                <GridViewColumn Header="Farbe" DisplayMemberBinding="{Binding Path=ElementRow.ColorRow.Name}" Width="150" />
+                                <GridViewColumn Header="Farbe" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Path=ElementRow.ColorRow.ImageUrl}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=ElementRow.ColorRow.Name}" VerticalAlignment="Center" Margin="3" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="Anzahl" DisplayMemberBinding="{Binding Path=CountDiff}" Width="50" />
                                 <GridViewColumn Header="Löschen" Width="50">
                                     <GridViewColumn.CellTemplate>
@@ -152,60 +168,99 @@
                 </DockPanel>
             </TabItem>
             <TabItem Name="tiParts" Header="Formen">
-                <ListView Name="lvParts">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Bild" Width="70">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Image Width="50" Height="50" Source="{Binding Path=ImageUrl}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=Number}" Width="75" />
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" Width="225" />
-                            <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=CountInSets}" Width="25" />
-                            <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=CountSolo}" Width="25" />
-                            <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=CountTotal}" Width="25" />
-                            <GridViewColumn Header="B" DisplayMemberBinding="{Binding Path=CountBuilt}" Width="25" />
-                            <GridViewColumn Header="A" DisplayMemberBinding="{Binding Path=CountAvailable}" Width="25" />
-                            <GridViewColumn Header="Inv" Width="50">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="I" Tag="{Binding Path=Number}" Margin="3" Click="bnInventory_Click" Width="25" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Text="Filter:" Margin="3" VerticalAlignment="Center" />
+                        <TextBox Name="tbPartFilter" Margin="3" Width="200" TextChanged="tbPartFilter_TextChanged" />
+                        <Button Name="bnPartSortNumber" Margin="3" Content="Nach Nummer Sortieren" Click="bnPartSortNumber_Click" />
+                        <Button Name="bnPartSortName" Margin="3" Content="Nach Name Sortieren" Click="bnPartSortName_Click" />
+                    </StackPanel>
+                    <ListView Name="lvParts">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Bild" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Width="50" Height="50" Source="{Binding Path=ImageUrl}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=Number}" Width="75" />
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" Width="225" />
+                                <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=CountInSets}" Width="25" />
+                                <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=CountSolo}" Width="25" />
+                                <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=CountTotal}" Width="25" />
+                                <GridViewColumn Header="B" DisplayMemberBinding="{Binding Path=CountBuilt}" Width="25" />
+                                <GridViewColumn Header="A" DisplayMemberBinding="{Binding Path=CountAvailable}" Width="25" />
+                                <GridViewColumn Header="Inv" Width="75">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Path=Inventory}" Margin="3" />
+                                                <Button Content="I" Tag="{Binding Path=Number}" Margin="3" Click="bnInventory_Click" Width="25" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
             </TabItem>
             <TabItem Name="tiElements" Header="Teile">
-                <ListView Name="lvElements">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Bild" Width="70">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Image Width="50" Height="50" Source="{Binding Path=ImageUrl}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=Number}" Width="75" />
-                            <GridViewColumn Header="Form" DisplayMemberBinding="{Binding Path=PartRow.Name}" Width="100" />
-                            <GridViewColumn Header="Farbe" DisplayMemberBinding="{Binding Path=ColorRow.Name}" Width="100" />
-                            <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=CountInSets}" Width="25" />
-                            <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=CountSolo}" Width="25" />
-                            <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=CountTotal}" Width="25" />
-                            <GridViewColumn Header="B" DisplayMemberBinding="{Binding Path=CountBuilt}" Width="25" />
-                            <GridViewColumn Header="A" DisplayMemberBinding="{Binding Path=CountAvailable}" Width="25" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Text="Filter:" Margin="3" VerticalAlignment="Center" />
+                        <TextBox Name="tbElementFilter" Margin="3" Width="200" TextChanged="tbElementFilter_TextChanged"/>
+                        <Button Name="bnElementSortNumber" Margin="3" Content="Nach Nummer Sortieren" Click="bnElementSortNumber_Click" />
+                        <Button Name="bnElementSortName" Margin="3" Content="Nach Name Sortieren" Click="bnElementSortName_Click" />
+                        <Button Name="bnElementSortColor" Margin="3" Content="Nach Farbe Sortieren" Click="bnElementSortColor_Click" />
+                    </StackPanel>
+                    <ListView Name="lvElements">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Bild" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Width="50" Height="50" Source="{Binding Path=ImageUrl}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=Number}" Width="75" />
+                                <GridViewColumn Header="Form" DisplayMemberBinding="{Binding Path=PartRow.Name}" Width="100" />
+                                <GridViewColumn Header="Farbe" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Path=ColorRow.ImageUrl}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=ColorRow.Name}" VerticalAlignment="Center" Margin="3" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=CountInSets}" Width="25" />
+                                <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=CountSolo}" Width="25" />
+                                <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=CountTotal}" Width="25" />
+                                <GridViewColumn Header="B" DisplayMemberBinding="{Binding Path=CountBuilt}" Width="25" />
+                                <GridViewColumn Header="A" DisplayMemberBinding="{Binding Path=CountAvailable}" Width="25" />
+                                <GridViewColumn Header="Inv" Width="75">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Path=Inventory}" Margin="3" />
+                                                <Button Content="I" Tag="{Binding Path=Number}" Margin="3" Click="bnInventoryElement_Click" Width="25" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
             </TabItem>
             <TabItem Name="tiInventory" Header="Inventur">
                 <DockPanel LastChildFill="True">
@@ -215,18 +270,44 @@
                         <TextBlock Text="/" Margin="3" />
                         <TextBlock Text="{Binding Path=Name}" Margin="3" />
                     </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Text="Kiste:" Margin="3" />
-                        <ComboBox Name="cbContainer" DisplayMemberPath="Name" Margin="3" SelectionChanged="cbContainer_SelectionChanged" />
-                        <TextBlock Text="Fach:" Margin="3" />
-                        <ComboBox Name="cbBin" DisplayMemberPath="Name" Margin="3" />
-                        <Button Name="bnInventorySave" Content="Speichern" Margin="3" Click="bnInventorySave_Click" />
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBox Name="tbNewName" Width="100" Margin="3" />
-                        <Button Name="bnContainerNew" Content="Neue Kiste" Width="75" Margin="3" Click="bnContainerNew_Click" />
-                        <Button Name="bnBinNew" Content="Neues Fach" Width="75" Margin="3" Click="bnBinNew_Click" />
-                    </StackPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock Text="Kiste:" Margin="3" VerticalAlignment="Center" />
+                            <ComboBox Name="cbContainer" Width="200" DisplayMemberPath="Name" Margin="3" SelectionChanged="cbContainer_SelectionChanged" />
+                            <TextBlock Text="Fach:" Margin="3" VerticalAlignment="Center" />
+                            <ComboBox Name="cbBin" Width="200" DisplayMemberPath="Name" Margin="3" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBox Name="tbNewName" Width="100" Margin="3" />
+                            <Button Name="bnContainerNew" Content="Neue Kiste" Width="75" Margin="3" Click="bnContainerNew_Click" />
+                            <Button Name="bnBinNew" Content="Neues Fach" Width="75" Margin="3" Click="bnBinNew_Click" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock Text="Farbe:" Margin="3" VerticalAlignment="Center" />
+                            <ComboBox Name="cbColor" Width="150" Margin="3">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="40" Height="40" Source="{Binding Path=ImageUrl}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="3" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Name="bnColorAdd" Content="Neue Farbe" Width="75" Margin="3" Click="bnColorAdd_Click" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Name="bnInventorySave" Content="Speichern" Margin="3" Click="bnInventorySave_Click" />
+                        </StackPanel>
+                    </Grid>
                     <ListView Name="lvInventory">
                         <ListView.View>
                             <GridView>
@@ -240,7 +321,17 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=ElementRow.Number}" Width="75" />
-                                <GridViewColumn Header="Farbe" DisplayMemberBinding="{Binding Path=ColorRow.Name}" Width="100" />
+                                <GridViewColumn Header="Form" DisplayMemberBinding="{Binding Path=PartRow.Name}" Width="100" />
+                                <GridViewColumn Header="Farbe" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Path=ColorRow.ImageUrl}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=ColorRow.Name}" VerticalAlignment="Center" Margin="3" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=ElementRow.CountInSets}" Width="25" />
                                 <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=ElementRow.CountSolo}" Width="25" />
                                 <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=ElementRow.CountTotal}" Width="25" />
@@ -251,9 +342,9 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Path=CountBin}" Margin="3" />
-                                                <Button Content="-" Margin="3" Width="15" Tag="{Binding Path=ElementRow.Number}" Click="bnInventoryMinus_Click" />
-                                                <Button Content="+" Margin="3" Width="15" Tag="{Binding Path=ElementRow.Number}" Click="bnInventoryPlus_Click" />
-                                                <Button Content="ok" Margin="3" Width="25" Tag="{Binding Path=ElementRow.Number}" Click="bnInventoryDone_Click" />
+                                                <Button Content="-" Margin="3" Width="15" Tag="{Binding Path=Id}" Click="bnInventoryMinus_Click" />
+                                                <Button Content="+" Margin="3" Width="15" Tag="{Binding Path=Id}" Click="bnInventoryPlus_Click" />
+                                                <Button Content="ok" Margin="3" Width="25" Tag="{Binding Path=Id}" Click="bnInventoryDone_Click" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -263,16 +354,44 @@
                         </ListView.View>
                     </ListView>
                 </DockPanel>
-                <!--
-                select part
-                show bin if known (ask for bin if not known)
-                show list of expected inventory:
-                    per color
-                        used in builds
-                        expected in bin
-                allow to increase / decrease count available in bin
-                save
-                -->
+            </TabItem>
+            <TabItem Name="tiInventoryDetails" Header="Inventurdaten">
+                <DockPanel LastChildFill="True">
+                    <ListView Name="lvInventoryData">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Path=Date}" Width="125" />
+                                <GridViewColumn Header="Bild" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Width="50" Height="50" Source="{Binding Path=ElementRow.ImageUrl}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Nummer" DisplayMemberBinding="{Binding Path=ElementRow.Number}" Width="75" />
+                                <GridViewColumn Header="Form" DisplayMemberBinding="{Binding Path=PartRow.Name}" Width="100" />
+                                <GridViewColumn Header="Farbe" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Path=ColorRow.ImageUrl}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=ColorRow.Name}" VerticalAlignment="Center" Margin="3" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="S" DisplayMemberBinding="{Binding Path=ElementRow.CountInSets}" Width="25" />
+                                <GridViewColumn Header="E" DisplayMemberBinding="{Binding Path=ElementRow.CountSolo}" Width="25" />
+                                <GridViewColumn Header="T" DisplayMemberBinding="{Binding Path=ElementRow.CountTotal}" Width="25" />
+                                <GridViewColumn Header="B" DisplayMemberBinding="{Binding Path=ElementRow.CountBuilt}" Width="25" />
+                                <GridViewColumn Header="A" DisplayMemberBinding="{Binding Path=ElementRow.CountAvailable}" Width="25" />
+                                <GridViewColumn Header="Inv. Total" DisplayMemberBinding="{Binding Path=Count}" Width="75" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </DockPanel>

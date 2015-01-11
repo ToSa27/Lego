@@ -58,7 +58,8 @@ namespace Rebrickable
             try
             {
                 XmlDocument xd = new XmlDocument();
-                xd.LoadXml(Call(function, hash, parameters));
+                string x = Call(function, hash, parameters);
+                xd.LoadXml(x);
                 return xd.SelectNodes(xpath);
             }
             catch
@@ -106,7 +107,10 @@ namespace Rebrickable
         {
             if (!_IsOpen)
                 return null;
-            return Call("get_set", false, new Dictionary<String, String>() { { "set_id", setid } }, "root/set");
+            XmlNodeList xnl = Call("get_set", false, new Dictionary<String, String>() { { "set_id", setid } }, "root/set");
+            if (xnl == null)
+                xnl = Call("get_set_parts", false, new Dictionary<String, String>() { { "set", setid } }, "set");
+            return xnl;
         }
 
         public XmlNodeList GetSetParts(String setid)
